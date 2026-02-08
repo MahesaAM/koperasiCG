@@ -47,7 +47,7 @@
                 @foreach ($loans as $loan)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $loan->application_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $loan->member->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $loan->anggota->name }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">Rp {{ number_format($loan->amount, 0, ',', '.') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                          @php

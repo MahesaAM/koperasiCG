@@ -11,11 +11,11 @@ class SavingController extends Controller
      */
     public function index()
     {
-        $query = \App\Models\Saving::with('member');
+        $query = \App\Models\Saving::with('anggota');
         
         if (auth()->user()->role === 'member') {
-            if (auth()->user()->member) {
-                $query->where('member_id', auth()->user()->member->id);
+            if (auth()->user()->anggota) {
+                $query->where('member_id', auth()->user()->anggota->id);
             } else {
                 $query->where('id', 0); // Show nothing if not linked
             }
@@ -30,12 +30,12 @@ class SavingController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->role === 'member' && auth()->user()->member) {
-            $members = \App\Models\Member::where('id', auth()->user()->member->id)->get();
+        if (auth()->user()->role === 'member' && auth()->user()->anggota) {
+            $daftarAnggota = \App\Models\Anggota::where('id', auth()->user()->anggota->id)->get();
         } else {
-            $members = \App\Models\Member::where('status', 'active')->get();
+            $daftarAnggota = \App\Models\Anggota::where('status', 'active')->get();
         }
-        return view('savings.create', compact('members'));
+        return view('savings.create', compact('daftarAnggota'));
     }
 
     /**
@@ -79,7 +79,7 @@ class SavingController extends Controller
                 ->sum('amount');
             
             if ($validated['amount'] > $currentBalance) {
-                return back()->withErrors(['amount' => 'Insufficient active balance for withdrawal.']);
+                return back()->withErrors(['amount' => 'Saldo aktif tidak mencukupi untuk penarikan.']);
             }
         }
 
@@ -99,8 +99,8 @@ class SavingController extends Controller
         \App\Models\Saving::create($validated);
 
         $msg = auth()->user()->role === 'member' 
-            ? 'Transaction submitted. Please wait for admin verification.' 
-            : 'Transaction recorded successfully.';
+            ? 'Transaksi berhasil dikirim. Silakan tunggu verifikasi admin.' 
+            : 'Transaksi berhasil dicatat.';
 
         return redirect()->route('savings.index')->with('success', $msg);
     }
@@ -113,7 +113,7 @@ class SavingController extends Controller
 
         $saving = \App\Models\Saving::findOrFail($id);
         if ($saving->status !== 'pending') {
-             return back()->with('error', 'Transaction is not pending.');
+             return back()->with('error', 'Transaksi tidak dalam status menunggu.');
         }
 
         // For withdrawals, check balance again at approval time
@@ -132,13 +132,13 @@ class SavingController extends Controller
              if ($saving->amount > $currentBalance) {
                  // Auto reject if insufficient funds now
                  $saving->update(['status' => 'rejected']);
-                 return back()->with('error', 'Insufficient balance. Transaction rejected.');
+                 return back()->with('error', 'Saldo tidak mencukupi. Transaksi ditolak.');
              }
         }
 
         $saving->update(['status' => 'approved']);
 
-        return back()->with('success', 'Transaction approved.');
+        return back()->with('success', 'Transaksi disetujui.');
     }
 
     public function reject(Request $request, string $id)
@@ -150,7 +150,7 @@ class SavingController extends Controller
         $saving = \App\Models\Saving::findOrFail($id);
         $saving->update(['status' => 'rejected']);
 
-        return back()->with('success', 'Transaction rejected.');
+        return back()->with('success', 'Transaksi ditolak.');
     }
 
     /**
@@ -158,10 +158,10 @@ class SavingController extends Controller
      */
     public function show(string $id)
     {
-        $saving = \App\Models\Saving::with('member')->findOrFail($id);
+        $saving = \App\Models\Saving::with('anggota')->findOrFail($id);
         
         // Authorization check for members
-        if (auth()->user()->role === 'member' && auth()->user()->member->id !== $saving->member_id) {
+        if (auth()->user()->role === 'member' && auth()->user()->anggota->id !== $saving->member_id) {
             abort(403);
         }
 
@@ -191,6 +191,6 @@ class SavingController extends Controller
     {
          $saving = \App\Models\Saving::findOrFail($id);
          $saving->delete();
-         return redirect()->route('savings.index')->with('success', 'Transaction deleted successfully.');
+         return redirect()->route('savings.index')->with('success', 'Transaksi berhasil dihapus.');
     }
 }

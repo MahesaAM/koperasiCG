@@ -30,7 +30,7 @@
                                 <option value="">Select Approved Loan</option>
                                 @foreach ($loans as $l)
                                     <option value="{{ $l->id }}" {{ ($loan && $loan->id == $l->id) ? 'selected' : '' }}>
-                                        Loan #{{ $l->id }} - {{ $l->member->name }} (Total: Rp {{ number_format($l->amount, 0) }})
+                                        Loan #{{ $l->id }} - {{ $l->anggota->name }} (Total: Rp {{ number_format($l->amount, 0) }})
                                     </option>
                                 @endforeach
                             </select>
@@ -50,14 +50,14 @@
                         </div>
                         
                          <div class="col-span-2">
-                            <label for="proof_file" class="block text-sm font-medium text-gray-700">Bukti Transfer {{ auth()->user()->role === 'member' ? '(Wajib)' : '(Opsional)' }}</label>
+                            <label for="proof_file" class="block text-sm font-medium text-gray-700">Bukti Transfer</label>
                             <input type="file" name="proof_file" id="proof_file" class="mt-1 block w-full text-sm text-gray-500
                                 file:mr-4 file:py-2 file:px-4
                                 file:rounded-md file:border-0
                                 file:text-sm file:font-semibold
                                 file:bg-indigo-50 file:text-indigo-700
                                 hover:file:bg-indigo-100
-                              " {{ auth()->user()->role === 'member' ? 'required' : '' }}>
+                              " required>
                         </div>
                     </div>
                     <div class="mt-6">

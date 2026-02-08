@@ -47,8 +47,22 @@ class User extends Authenticatable
         ];
     }
 
-    public function member()
+    public function anggota()
     {
-        return $this->hasOne(Member::class);
+        return $this->hasOne(Anggota::class);
+    }
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param string|array $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        if (is_array($role)) {
+            return in_array($this->role, $role);
+        }
+        return $this->role === $role;
     }
 }

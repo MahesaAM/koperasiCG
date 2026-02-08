@@ -29,7 +29,7 @@ class DashboardController extends Controller
              return view('dashboard', compact('totalMembers', 'totalSavings', 'activeLoans'));
         }
 
-        $totalMembers = \App\Models\Member::count();
+        $totalMembers = \App\Models\Anggota::count();
         $totalSavings = \App\Models\Saving::where('transaction_type', 'deposit')->sum('amount') - \App\Models\Saving::where('transaction_type', 'withdrawal')->sum('amount');
         $activeLoans = \App\Models\Loan::where('status', 'approved')->count();
 

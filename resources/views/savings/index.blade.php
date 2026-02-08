@@ -53,8 +53,8 @@
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $saving->transaction_date }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">{{ $saving->member->name }}</div>
-                        <div class="text-xs text-gray-500">{{ $saving->member->nik }}</div>
+                        <div class="text-sm font-medium text-gray-900">{{ $saving->anggota->name }}</div>
+                        <div class="text-xs text-gray-500">{{ $saving->anggota->nik }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ucfirst($saving->type) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">

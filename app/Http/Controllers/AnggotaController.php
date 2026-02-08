@@ -4,37 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class MemberController extends Controller
+class AnggotaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $members = \App\Models\Member::latest()->paginate(10);
-        return view('members.index', compact('members'));
+        $daftarAnggota = \App\Models\Anggota::latest()->paginate(10);
+        return view('anggota.index', compact('daftarAnggota'));
     }
 
     public function createUser(Request $request, $id)
     {
-        $member = \App\Models\Member::findOrFail($id);
-        if ($member->user_id) {
-            return back()->with('error', 'Member already has a user account.');
+        $anggota = \App\Models\Anggota::findOrFail($id);
+        if ($anggota->user_id) {
+            return back()->with('error', 'Anggota sudah memiliki akun pengguna.');
         }
 
         $user = \App\Models\User::create([
-            'name' => $member->name,
-            'email' => strtolower(str_replace(' ', '.', $member->name)) . '@example.com', // Simple generation
+            'name' => $anggota->name,
+            'email' => strtolower(str_replace(' ', '.', $anggota->name)) . '@example.com', // Simple generation
             'password' => bcrypt('password'), // Default password
             'role' => 'member',
         ]);
 
-        $member->update(['user_id' => $user->id]);
+        $anggota->update(['user_id' => $user->id]);
 
-        return back()->with('success', 'User account created for member. Email: ' . $user->email . ', Password: password');
+        return back()->with('success', 'Akun pengguna berhasil dibuat. Email: ' . $user->email . ', Password: password');
     }
 
     /**
@@ -42,7 +39,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('members.create');
+        return view('anggota.create');
     }
 
     /**
@@ -59,9 +56,9 @@ class MemberController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        \App\Models\Member::create($validated);
+        \App\Models\Anggota::create($validated);
 
-        return redirect()->route('members.index')->with('success', 'Member created successfully.');
+        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil ditambahkan.');
     }
 
     /**
@@ -69,8 +66,8 @@ class MemberController extends Controller
      */
     public function show(string $id)
     {
-        $member = \App\Models\Member::findOrFail($id);
-        return view('members.show', compact('member'));
+        $anggota = \App\Models\Anggota::findOrFail($id);
+        return view('anggota.show', compact('anggota'));
     }
 
     /**
@@ -78,8 +75,8 @@ class MemberController extends Controller
      */
     public function edit(string $id)
     {
-        $member = \App\Models\Member::findOrFail($id);
-        return view('members.edit', compact('member'));
+        $anggota = \App\Models\Anggota::findOrFail($id);
+        return view('anggota.edit', compact('anggota'));
     }
 
     /**
@@ -87,10 +84,10 @@ class MemberController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $member = \App\Models\Member::findOrFail($id);
+        $anggota = \App\Models\Anggota::findOrFail($id);
         
         $validated = $request->validate([
-            'nik' => 'required|unique:members,nik,' . $member->id,
+            'nik' => 'required|unique:members,nik,' . $anggota->id,
             'name' => 'required',
             'address' => 'required',
             'phone' => 'required',
@@ -98,9 +95,9 @@ class MemberController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        $member->update($validated);
+        $anggota->update($validated);
 
-        return redirect()->route('members.index')->with('success', 'Member updated successfully.');
+        return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil diperbarui.');
     }
 
     /**
@@ -108,9 +105,9 @@ class MemberController extends Controller
      */
     public function destroy(string $id)
     {
-        $member = \App\Models\Member::findOrFail($id);
-        $member->delete();
+        $anggota = \App\Models\Anggota::findOrFail($id);
+        $anggota->delete();
 
-        return redirect()->route('members.index')->with('success', 'Member deleted successfully.');
+        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil dihapus.');
     }
 }

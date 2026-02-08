@@ -14,19 +14,19 @@ class ReportController extends Controller
     public function members(Request $request)
     {
         $status = $request->query('status');
-        $query = \App\Models\Member::query();
+        $query = \App\Models\Anggota::query();
         if ($status) {
             $query->where('status', $status);
         }
-        $members = $query->get();
-        return view('reports.members', compact('members', 'status'));
+        $daftarAnggota = $query->get();
+        return view('reports.members', compact('daftarAnggota', 'status'));
     }
 
     public function savings(Request $request)
     {
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
-        $query = \App\Models\Saving::with('member');
+        $query = \App\Models\Saving::with('anggota');
         
         if ($startDate && $endDate) {
             $query->whereBetween('transaction_date', [$startDate, $endDate]);
@@ -44,7 +44,7 @@ class ReportController extends Controller
         // Simple report of loans approved in a period or all time
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
-        $query = \App\Models\Loan::with('member');
+        $query = \App\Models\Loan::with('anggota');
         
         if ($startDate && $endDate) {
             $query->whereBetween('application_date', [$startDate, $endDate]);
@@ -58,7 +58,7 @@ class ReportController extends Controller
     {
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
-        $query = \App\Models\Installment::with('loan.member');
+        $query = \App\Models\Installment::with('loan.anggota');
         
         if ($startDate && $endDate) {
             $query->whereBetween('payment_date', [$startDate, $endDate]);

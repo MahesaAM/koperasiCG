@@ -42,7 +42,7 @@
             </div>
             <div class="bg-gray-50 px-6 py-3">
                 <div class="text-sm">
-                    <a href="{{ route('members.index') }}" class="font-medium text-blue-600 hover:text-blue-500">Lihat semua anggota <span aria-hidden="true">&rarr;</span></a>
+                    <a href="{{ route('anggota.index') }}" class="font-medium text-blue-600 hover:text-blue-500">Lihat data anggota <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
             </div>
             <div class="bg-gray-50 px-6 py-3">
                 <div class="text-sm">
-                    <a href="{{ route('savings.index') }}" class="font-medium text-green-600 hover:text-green-500">Lihat transaksi <span aria-hidden="true">&rarr;</span></a>
+                    <a href="{{ route('savings.index') }}" class="font-medium text-green-600 hover:text-green-500">Lihat Simpanan <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
     <div class="mt-8">
         <h2 class="text-lg font-medium text-gray-900 mb-4">Aksi Cepat</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-             <a href="{{ route('members.create') }}" class="relative block rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-5 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+             <a href="{{ route('anggota.create') }}" class="relative block rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-5 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                 <div class="flex-shrink-0">
                     <div class="h-10 w-10 rounded-full bg-indigo-50 flex items-center justify-center">
                         <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

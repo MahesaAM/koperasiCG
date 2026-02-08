@@ -31,7 +31,10 @@
                                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition-colors">Dashboard</a>
                                 
                                 @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'manager', 'kasir']))
-                                   <a href="{{ route('members.index') }}" class="{{ request()->routeIs('members.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition-colors">Anggota</a>
+                                   <a href="{{ route('anggota.index') }}" class="{{ request()->routeIs('anggota.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition-colors">Anggota</a>
+                                @endif
+                                
+                                @if(auth()->check() && auth()->user()->role === 'admin')
                                    <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition-colors">Pengguna</a>
                                 @endif
    
@@ -91,36 +94,55 @@
             <div x-show="mobileMenuOpen" style="display: none;" class="md:hidden bg-indigo-700">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                      <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
-                    @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'manager', 'kasir']))
-                       <a href="{{ route('members.index') }}" class="{{ request()->routeIs('members.*') ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">Anggota</a>
-                       <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">Pengguna</a>
-                    @endif
-                    <a href="{{ route('savings.index') }}" class="{{ request()->routeIs('savings.*') ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">Simpanan</a>
-                    <a href="{{ route('loans.index') }}" class="{{ request()->routeIs('loans.*') ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">Pinjaman</a>
-                    <a href="{{ route('installments.index') }}" class="{{ request()->routeIs('installments.*') ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">Angsuran</a>
-                    @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'manager']))
-                       <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">Laporan</a>
-                    @endif
-                </div>
-                <div class="pt-4 pb-4 border-t border-indigo-800">
-                    <div class="flex items-center px-5">
-                        <div class="flex-shrink-0">
-                             <div class="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center border-2 border-indigo-400 text-white font-bold">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
-                        </div>
-                        <div class="ml-3">
-                            <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}</div>
-                            <div class="text-sm font-medium leading-none text-indigo-300">{{ Auth::user()->email }}</div>
-                        </div>
-                    </div>
-                    <div class="mt-3 px-2 space-y-1">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-100 hover:text-white hover:bg-indigo-600">Keluar</button>
-                        </form>
-                    </div>
-                </div>
+                <div class="pt-2 pb-3 space-y-1">
+            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">
+                {{ __('Dashboard') }}
+            </a>
+            @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager') || auth()->user()->hasRole('kasir'))
+                <a href="{{ route('anggota.index') }}" class="{{ request()->routeIs('anggota.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">
+                    {{ __('Anggota') }}
+                </a>
+            @endif
+
+            @if(auth()->user()->hasRole('admin'))
+                 <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">
+                    {{ __('Pengguna') }}
+                </a>
+            @endif
+             <a href="{{ route('savings.index') }}" class="{{ request()->routeIs('savings.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">
+                {{ __('Simpanan') }}
+            </a>
+             <a href="{{ route('loans.index') }}" class="{{ request()->routeIs('loans.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">
+                {{ __('Pinjaman') }}
+            </a>
+            <a href="{{ route('installments.index') }}" class="{{ request()->routeIs('installments.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">
+                {{ __('Angsuran') }}
+            </a>
+            @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager'))
+                 <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'bg-indigo-700 text-white' : 'text-indigo-100 hover:bg-indigo-500 hover:text-white' }} block px-3 py-2 rounded-md text-base font-medium">
+                    {{ __('Laporan') }}
+                </a>
+            @endif
+        </div>
+
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="px-4">
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <button type="submit" class="text-indigo-100 hover:bg-indigo-500 hover:text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium">
+                        {{ __('Keluar') }}
+                    </button>
+                </form>
+            </div>
+        </div>
             </div>
         </nav>
 

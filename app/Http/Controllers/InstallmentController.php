@@ -8,12 +8,12 @@ class InstallmentController extends Controller
 {
     public function index()
     {
-        $query = \App\Models\Installment::with('loan.member');
+        $query = \App\Models\Installment::with('loan.anggota');
 
         if (auth()->user()->role === 'member') {
-            if (auth()->user()->member) {
+            if (auth()->user()->anggota) {
                 $query->whereHas('loan', function($q) {
-                    $q->where('member_id', auth()->user()->member->id);
+                    $q->where('member_id', auth()->user()->anggota->id);
                 });
             } else {
                 $query->where('id', 0);
@@ -32,18 +32,18 @@ class InstallmentController extends Controller
         $loan_id = $request->query('loan_id');
         $loan = null;
         if ($loan_id) {
-            $loan = \App\Models\Loan::with('member')->find($loan_id);
+            $loan = \App\Models\Loan::with('anggota')->find($loan_id);
              // Security check for pre-selected loan
-            if (auth()->user()->role === 'member' && auth()->user()->member) {
-                if (!$loan || $loan->member_id !== auth()->user()->member->id) {
-                    abort(403, 'Unauthorized loan access');
+            if (auth()->user()->role === 'member' && auth()->user()->anggota) {
+                if (!$loan || $loan->member_id !== auth()->user()->anggota->id) {
+                    abort(403, 'Akses pinjaman tidak diizinkan');
                 }
             }
         }
         
-        $query = \App\Models\Loan::where('status', 'approved')->with('member');
-        if (auth()->user()->role === 'member' && auth()->user()->member) {
-             $query->where('member_id', auth()->user()->member->id);
+        $query = \App\Models\Loan::where('status', 'approved')->with('anggota');
+        if (auth()->user()->role === 'member' && auth()->user()->anggota) {
+             $query->where('member_id', auth()->user()->anggota->id);
         }
         $loans = $query->get();
         
@@ -60,13 +60,16 @@ class InstallmentController extends Controller
             'payment_date' => 'required|date',
             'amount_paid' => 'required|numeric|min:0',
             'note' => 'nullable|string',
+            'proof_file' => 'required|file|mimes:jpeg,png,pdf|max:2048',
         ];
 
+        /*
         if (auth()->user()->role === 'member') {
             $rules['proof_file'] = 'required|file|mimes:jpeg,png,pdf|max:2048';
         } else {
              $rules['proof_file'] = 'nullable|file|mimes:jpeg,png,pdf|max:2048';
         }
+        */
 
         $validated = $request->validate($rules);
 
@@ -105,8 +108,8 @@ class InstallmentController extends Controller
         }
 
         $msg = auth()->user()->role === 'member' 
-            ? 'Payment recorded. Please wait for admin verification.' 
-            : 'Payment recorded successfully.';
+            ? 'Pembayaran berhasil dicatat. Silakan tunggu verifikasi admin.' 
+            : 'Pembayaran berhasil dicatat.';
 
         return redirect()->route('installments.index')->with('success', $msg);
     }
@@ -119,7 +122,7 @@ class InstallmentController extends Controller
 
         $installment = \App\Models\Installment::findOrFail($id);
         if ($installment->status !== 'pending') {
-             return back()->with('error', 'Payment is not pending.');
+             return back()->with('error', 'Pembayaran tidak dalam status menunggu.');
         }
 
         $installment->update(['status' => 'approved']);
@@ -136,7 +139,7 @@ class InstallmentController extends Controller
              $loan->update(['status' => 'paid']);
         }
 
-        return back()->with('success', 'Payment approved.');
+        return back()->with('success', 'Pembayaran disetujui.');
     }
 
     public function reject(Request $request, string $id)
@@ -148,7 +151,7 @@ class InstallmentController extends Controller
         $installment = \App\Models\Installment::findOrFail($id);
         $installment->update(['status' => 'rejected']);
 
-        return back()->with('success', 'Payment rejected.');
+        return back()->with('success', 'Pembayaran ditolak.');
     }
 
     /**
@@ -156,11 +159,11 @@ class InstallmentController extends Controller
      */
     public function show(string $id)
     {
-         $installment = \App\Models\Installment::with('loan.member')->findOrFail($id);
+         $installment = \App\Models\Installment::with('loan.anggota')->findOrFail($id);
          
          // Auth check
          if (auth()->user()->role === 'member') {
-             if (auth()->user()->member->id !== $installment->loan->member_id) {
+             if (auth()->user()->anggota->id !== $installment->loan->member_id) {
                  abort(403);
              }
          }
@@ -191,6 +194,6 @@ class InstallmentController extends Controller
     {
         $installment = \App\Models\Installment::findOrFail($id);
         $installment->delete();
-        return back()->with('success', 'Installment deleted.');
+        return back()->with('success', 'Angsuran berhasil dihapus.');
     }
 }

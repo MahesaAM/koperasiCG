@@ -3,7 +3,13 @@
 @section('content')
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center mb-6">
+        <!-- Print Header -->
+        <div class="hidden print:block mb-8 text-center">
+            <h2 class="text-2xl font-bold">Koperasi Cahaya Gemilang</h2>
+            <h3 class="text-xl">Bukti Pembayaran Angsuran</h3>
+        </div>
+
+        <div class="flex justify-between items-center mb-6 no-print">
             <h1 class="text-2xl font-semibold text-gray-900">Payment Details</h1>
             <a href="{{ route('installments.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">Back</a>
         </div>
@@ -29,7 +35,7 @@
                     </div>
                     <div class="sm:col-span-1">
                         <dt class="text-sm font-medium text-gray-500">Member</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $installment->loan->member->name }}</dd>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $installment->loan->anggota->name }}</dd>
                     </div>
                     
                     <div class="sm:col-span-1 bg-green-50 p-2 rounded">

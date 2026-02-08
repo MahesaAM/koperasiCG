@@ -25,13 +25,13 @@
                                 <label for="member_id" class="block text-sm font-medium text-gray-700">Anggota</label>
                                 @if(auth()->user()->role === 'member')
                                     <select disabled class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none sm:text-sm">
-                                        <option value="{{ auth()->user()->member->id }}">{{ auth()->user()->member->name }}</option>
+                                        <option value="{{ auth()->user()->anggota->id }}">{{ auth()->user()->anggota->name }}</option>
                                     </select>
-                                    <input type="hidden" name="member_id" value="{{ auth()->user()->member->id }}">
+                                    <input type="hidden" name="member_id" value="{{ auth()->user()->anggota->id }}">
                                 @else
                                     <select id="member_id" name="member_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        @foreach($members as $member)
-                                            <option value="{{ $member->id }}">{{ $member->name }} - {{ $member->nik }}</option>
+                                        @foreach($daftarAnggota as $anggota)
+                                            <option value="{{ $anggota->id }}">{{ $anggota->name }} - {{ $anggota->nik }}</option>
                                         @endforeach
                                     </select>
                                 @endif
@@ -63,16 +63,16 @@
                             </div>
                              
                              <div class="col-span-6">
-                                <label for="status" class="block text-sm font-medium text-gray-700">Initial Status</label>
+                                <label for="status" class="block text-sm font-medium text-gray-700">Status Awal</label>
                                 <input type="text" disabled class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md text-gray-500" value="Pending">
                                 <input type="hidden" name="status" value="pending">
                             </div>
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                        <a href="{{ route('loans.index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">Cancel</a>
+                        <a href="{{ route('loans.index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">Batal</a>
                         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Submit Application
+                            Ajukan Pinjaman
                         </button>
                     </div>
                 </div>

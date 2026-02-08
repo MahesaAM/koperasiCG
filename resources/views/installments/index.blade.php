@@ -50,7 +50,7 @@
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $installment->payment_date }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">{{ $installment->loan->member->name }}</div>
+                        <div class="text-sm font-medium text-gray-900">{{ $installment->loan->anggota->name }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">#{{ $installment->loan_id }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">Rp {{ number_format($installment->amount_paid, 0, ',', '.') }}</td>

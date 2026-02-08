@@ -1,3 +1,5 @@
+@import './print_styles.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

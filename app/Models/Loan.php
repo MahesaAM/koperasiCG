@@ -17,9 +17,9 @@ class Loan extends Model
         'approval_date',
     ];
 
-    public function member()
+    public function anggota()
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(Anggota::class, 'member_id'); // Explicit FK since we kept column member_id
     }
 
     public function approver()

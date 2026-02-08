@@ -8,11 +8,12 @@ class LoanController extends Controller
 {
     public function index()
     {
-        $query = \App\Models\Loan::with('member');
+        $query = \App\Models\Loan::with('anggota');
 
         if (auth()->user()->role === 'member') {
-            if (auth()->user()->member) {
-                $query->where('member_id', auth()->user()->member->id);
+            if (auth()->user()->anggota) {
+                // Assuming 'member_id' column still exists in loans table
+                $query->where('member_id', auth()->user()->anggota->id);
             } else {
                 $query->where('id', 0);
             }
@@ -27,8 +28,8 @@ class LoanController extends Controller
      */
     public function create()
     {
-        $members = \App\Models\Member::where('status', 'active')->get();
-        return view('loans.create', compact('members'));
+        $daftarAnggota = \App\Models\Anggota::where('status', 'active')->get();
+        return view('loans.create', compact('daftarAnggota'));
     }
 
     /**
@@ -48,7 +49,7 @@ class LoanController extends Controller
 
         \App\Models\Loan::create($validated);
 
-        return redirect()->route('loans.index')->with('success', 'Loan application submitted successfully.');
+        return redirect()->route('loans.index')->with('success', 'Pengajuan pinjaman berhasil dikirim.');
     }
 
     /**
@@ -56,7 +57,7 @@ class LoanController extends Controller
      */
     public function show(string $id)
     {
-        $loan = \App\Models\Loan::with(['member', 'installments', 'approver'])->findOrFail($id);
+        $loan = \App\Models\Loan::with(['anggota', 'installments', 'approver'])->findOrFail($id);
         return view('loans.show', compact('loan'));
     }
 
@@ -68,10 +69,10 @@ class LoanController extends Controller
         // Typically loans are not edited after submission unless pending
         $loan = \App\Models\Loan::findOrFail($id);
         if ($loan->status !== 'pending') {
-             return back()->with('error', 'Only pending loans can be edited.');
+             return back()->with('error', 'Hanya pinjaman dengan status menunggu yang dapat diubah.');
         }
-        $members = \App\Models\Member::where('status', 'active')->get();
-        return view('loans.edit', compact('loan', 'members'));
+        $daftarAnggota = \App\Models\Anggota::where('status', 'active')->get();
+        return view('loans.edit', compact('loan', 'daftarAnggota'));
     }
 
     /**
@@ -81,7 +82,7 @@ class LoanController extends Controller
     {
         $loan = \App\Models\Loan::findOrFail($id);
         if ($loan->status !== 'pending') {
-             return back()->with('error', 'Only pending loans can be edited.');
+             return back()->with('error', 'Hanya pinjaman dengan status menunggu yang dapat diubah.');
         }
 
         $validated = $request->validate([
@@ -94,7 +95,7 @@ class LoanController extends Controller
 
         $loan->update($validated);
 
-        return redirect()->route('loans.index')->with('success', 'Loan updated successfully.');
+        return redirect()->route('loans.index')->with('success', 'Pinjaman berhasil diperbarui.');
     }
 
     /**
@@ -104,7 +105,7 @@ class LoanController extends Controller
     {
         $loan = \App\Models\Loan::findOrFail($id);
         $loan->delete();
-        return redirect()->route('loans.index')->with('success', 'Loan deleted successfully.');
+        return redirect()->route('loans.index')->with('success', 'Pinjaman berhasil dihapus.');
     }
 
     public function approve(Request $request, string $id)
@@ -116,7 +117,7 @@ class LoanController extends Controller
 
         $loan = \App\Models\Loan::findOrFail($id);
         if ($loan->status !== 'pending') {
-            return back()->with('error', 'Loan is not pending approval.');
+            return back()->with('error', 'Pinjaman tidak dalam status menunggu persetujuan.');
         }
 
         $loan->update([
@@ -128,7 +129,7 @@ class LoanController extends Controller
         // Logic to disburse funds could go here (e.g., create a Savings withdrawal or just record it)
         // For now, we assume funds are disbursed manually or recorded separately.
 
-        return back()->with('success', 'Loan approved successfully.');
+        return back()->with('success', 'Pinjaman berhasil disetujui.');
     }
 
     public function reject(Request $request, string $id)
@@ -139,7 +140,7 @@ class LoanController extends Controller
 
         $loan = \App\Models\Loan::findOrFail($id);
         if ($loan->status !== 'pending') {
-            return back()->with('error', 'Loan is not pending approval.');
+            return back()->with('error', 'Pinjaman tidak dalam status menunggu persetujuan.');
         }
 
         $loan->update([
@@ -148,6 +149,6 @@ class LoanController extends Controller
             'approval_date' => now(),
         ]);
 
-        return back()->with('success', 'Loan rejected.');
+        return back()->with('success', 'Pinjaman ditolak.');
     }
 }

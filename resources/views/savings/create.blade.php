@@ -43,17 +43,17 @@
                 <div class="shadow sm:rounded-md sm:overflow-hidden">
                     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
                         <div class="grid grid-cols-6 gap-6">
-                             <div class="col-span-6">
+                            <div class="col-span-6">
                                 <label for="member_id" class="block text-sm font-medium text-gray-700">Anggota</label>
-                                @if(auth()->user()->role === 'member' && auth()->user()->member)
+                                @if(auth()->user()->role === 'member' && auth()->user()->anggota)
                                     <select disabled class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none sm:text-sm">
-                                        <option value="{{ auth()->user()->member->id }}">{{ auth()->user()->member->name }} - {{ auth()->user()->member->nik }}</option>
+                                        <option value="{{ auth()->user()->anggota->id }}">{{ auth()->user()->anggota->name }} - {{ auth()->user()->anggota->nik }}</option>
                                     </select>
-                                    <input type="hidden" name="member_id" value="{{ auth()->user()->member->id }}">
+                                    <input type="hidden" name="member_id" value="{{ auth()->user()->anggota->id }}">
                                 @else
                                     <select id="member_id" name="member_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        @foreach($members as $member)
-                                            <option value="{{ $member->id }}">{{ $member->name }} - {{ $member->nik }}</option>
+                                        @foreach($daftarAnggota as $anggota)
+                                            <option value="{{ $anggota->id }}">{{ $anggota->name }} - {{ $anggota->nik }}</option>
                                         @endforeach
                                     </select>
                                 @endif

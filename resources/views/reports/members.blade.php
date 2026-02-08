@@ -44,14 +44,14 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($members as $member)
+                @foreach ($daftarAnggota as $anggota)
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $member->nik }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $member->name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $member->join_date }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $anggota->nik }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $anggota->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $anggota->join_date }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $member->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                {{ ucfirst($member->status == 'active' ? 'Aktif' : 'Tidak Aktif') }}
+                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $anggota->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ ucfirst($anggota->status == 'active' ? 'Aktif' : 'Tidak Aktif') }}
                         </span>
                     </td>
                 </tr>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-<h1 class="text-3xl font-bold text-gray-900 leading-tight">Laporan Keuangan</h1>
+<h1 class="text-3xl font-bold text-gray-900 leading-tight no-print">Laporan Keuangan</h1>
 @endsection
 
 @section('content')
@@ -9,6 +9,13 @@
     <div class="mb-6 flex justify-between items-center no-print">
         <p class="text-gray-600">Ringkasan kesehatan finansial koperasi sampai saat ini.</p>
         <button type="button" onclick="window.print()" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">Cetak Laporan</button>
+    </div>
+
+    <!-- Report Header (Print Only) -->
+    <div class="hidden print:block mb-8 text-center">
+        <h2 class="text-2xl font-bold">Koperasi Cahaya Gemilang</h2>
+        <h3 class="text-xl">Laporan Keuangan</h3>
+        <p>Ringkasan kesehatan finansial koperasi sampai saat ini.</p>
     </div>
 
     <!-- Financial Cards -->

@@ -3,17 +3,23 @@
 @section('content')
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-semibold text-gray-900">Loan Details</h1>
-            <a href="{{ route('loans.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">Back</a>
+        <!-- Print Header -->
+        <div class="hidden print:block mb-8 text-center">
+            <h2 class="text-2xl font-bold">Koperasi Cahaya Gemilang</h2>
+            <h3 class="text-xl">Perjanjian Pinjaman</h3>
+        </div>
+
+        <div class="flex justify-between items-center mb-6 no-print">
+            <h1 class="text-2xl font-semibold text-gray-900">Detail Pinjaman</h1>
+            <a href="{{ route('loans.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">Kembali</a>
         </div>
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6 bg-white border-b border-gray-200">
                 <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
                     <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Member</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $loan->member->name }}</dd>
+                        <dt class="text-sm font-medium text-gray-500">Anggota</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $loan->anggota->name }}</dd>
                     </div>
                     <div class="sm:col-span-1">
                         <dt class="text-sm font-medium text-gray-500">Status</dt>
@@ -23,21 +29,21 @@
                                 {{ $loan->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
                                 {{ $loan->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
                                 {{ $loan->status === 'paid' ? 'bg-blue-100 text-blue-800' : '' }}">
-                                {{ ucfirst($loan->status) }}
+                                {{ ucfirst($loan->status == 'pending' ? 'Menunggu' : ($loan->status == 'approved' ? 'Disetujui' : ($loan->status == 'rejected' ? 'Ditolak' : 'Lunas'))) }}
                             </span>
                         </dd>
                     </div>
                     <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Amount</dt>
+                        <dt class="text-sm font-medium text-gray-500">Jumlah Pinjaman</dt>
                         <dd class="mt-1 text-sm text-gray-900">Rp {{ number_format($loan->amount, 0, ',', '.') }}</dd>
                     </div>
                     <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Total Interest (Est.)</dt>
+                        <dt class="text-sm font-medium text-gray-500">Total Bunga (Est.)</dt>
                         <dd class="mt-1 text-sm text-gray-900">Rp {{ number_format($loan->amount * ($loan->interest_rate / 100), 0, ',', '.') }}</dd>
                     </div>
                      <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Duration</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $loan->duration }} Months</dd>
+                        <dt class="text-sm font-medium text-gray-500">Durasi</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $loan->duration }} Bulan</dd>
                     </div>
                     @if($loan->approved_by)
                     <div class="sm:col-span-1">

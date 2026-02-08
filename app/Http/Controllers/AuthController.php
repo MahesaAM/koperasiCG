@@ -52,7 +52,7 @@ class AuthController extends Controller
             'role' => 'member',
         ]);
 
-        \App\Models\Member::create([
+        \App\Models\Anggota::create([
             'user_id' => $user->id,
             'nik' => $validated['nik'],
             'name' => $validated['name'],
@@ -64,7 +64,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/')->with('success', 'Registration successful. Please wait for admin verification.');
+        return redirect('/')->with('success', 'Pendaftaran berhasil. Silakan tunggu verifikasi admin.');
     }
 
     public function logout(Request $request)

@@ -1,0 +1,212 @@
+/* Print-Only Styles - Comprehensive print media queries */
+
+@media print {
+
+    /* Hide navigation and layout chrome */
+    nav,
+    header,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Show print-only elements */
+    .print-only {
+        display: block !important;
+    }
+
+    /* Page setup */
+    @page {
+        margin: 1.5cm;
+        size: A4;
+    }
+
+    /* Reset body and main container */
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+
+    /* Remove all shadows, borders, and rounded corners for cleaner print */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* Ensure content takes full width */
+    .max-w-7xl,
+    .container {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Table optimizations */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        page-break-inside: auto;
+        font-size: 10pt;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    td,
+    th {
+        padding: 8px 12px;
+        border: 1px solid #ddd !important;
+    }
+
+    th {
+        background-color: #f3f4f6 !important;
+        font-weight: bold;
+        color: black !important;
+    }
+
+    /* Optimize spacing for print */
+    .px-4,
+    .px-6,
+    .py-4,
+    .py-6,
+    .sm\\:px-6,
+    .lg\\:px-8 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Card and grid layouts */
+    .grid {
+        display: block !important;
+    }
+
+    .grid>div {
+        margin-bottom: 1rem;
+        page-break-inside: avoid;
+    }
+
+    /* Remove background colors except for subtle table headers */
+    .bg-white,
+    .bg-gray-50,
+    .bg-indigo-600,
+    .bg-green-100,
+    .bg-red-100,
+    .bg-yellow-100,
+    .bg-blue-100 {
+        background-color: transparent !important;
+        border: 1px solid #ddd !important;
+    }
+
+    /* Keep status badge colors readable */
+    .bg-green-100 {
+        background-color: #e8f5e9 !important;
+    }
+
+    .bg-red-100 {
+        background-color: #ffebee !important;
+    }
+
+    .bg-yellow-100 {
+        background-color: #fff9c4 !important;
+    }
+
+    /* Typography adjustments */
+    h1,
+    h2,
+    h3 {
+        page-break-after: avoid;
+        color: black !important;
+    }
+
+    h1 {
+        font-size: 18pt;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        font-size: 16pt;
+        margin-bottom: 0.75rem;
+    }
+
+    h3 {
+        font-size: 14pt;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Links - show as plain text */
+    a {
+        text-decoration: none;
+        color: black !important;
+    }
+
+    a[href]:after {
+        content: "";
+    }
+
+    /* Remove rounded corners */
+    .rounded,
+    .rounded-md,
+    .rounded-lg,
+    .rounded-full,
+    .sm\\:rounded-lg {
+        border-radius: 0 !important;
+    }
+
+    /* Ensure good contrast */
+    .text-gray-500,
+    .text-gray-600,
+    .text-gray-700 {
+        color: #333 !important;
+    }
+
+    .text-gray-900 {
+        color: black !important;
+    }
+
+    /* Print header styling */
+    .print\\:block {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid black;
+    }
+
+    /* Optimize description lists */
+    dl {
+        display: block !important;
+    }
+
+    dd,
+    dt {
+        margin-bottom: 0.5rem;
+    }
+
+    dt {
+        font-weight: bold;
+    }
+
+    /* Financial cards/summary boxes */
+    .border {
+        border: 1px solid #333 !important;
+    }
+
+    /* Page breaks */
+    .page-break-before {
+        page-break-before: always;
+    }
+
+    .page-break-after {
+        page-break-after: always;
+    }
+
+    .avoid-break {
+        page-break-inside: avoid;
+    }
+}

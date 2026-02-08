@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-<h1 class="text-3xl font-bold text-gray-900 leading-tight">Laporan Angsuran</h1>
+<h1 class="text-3xl font-bold text-gray-900 leading-tight no-print">Laporan Angsuran</h1>
 @endsection
 
 @section('content')
@@ -20,6 +20,14 @@
             <button type="button" onclick="window.print()" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 ml-auto">Cetak Laporan</button>
         </form>
     </div>
+
+    <!-- Report Header (Print Only) -->
+    <div class="hidden print:block mb-8 text-center">
+        <h2 class="text-2xl font-bold">Koperasi Cahaya Gemilang</h2>
+        <h3 class="text-xl">Laporan Angsuran</h3>
+        <p>Periode: {{ $startDate ?? 'Semua Waktu' }} - {{ $endDate ?? 'Sekarang' }}</p>
+    </div>
+
 
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -48,7 +56,7 @@
                 @forelse($installments as $inst)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $inst->payment_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $inst->loan->member->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $inst->loan->anggota->name }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">#{{ $inst->loan_id }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">Rp {{ number_format($inst->amount_paid, 0, ',', '.') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

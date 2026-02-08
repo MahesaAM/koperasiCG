@@ -17,8 +17,8 @@ class Saving extends Model
         'proof_file',
     ];
 
-    public function member()
+    public function anggota()
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(Anggota::class, 'member_id'); // Explicit FK
     }
 }
