@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('savings/{saving}/approve', [\App\Http\Controllers\SavingController::class, 'approve'])->name('savings.approve');
     Route::put('savings/{saving}/reject', [\App\Http\Controllers\SavingController::class, 'reject'])->name('savings.reject');
     
+    Route::post('loans/settings/interest', [\App\Http\Controllers\LoanController::class, 'updateInterestRate'])->name('loans.settings.interest');
     Route::resource('loans', \App\Http\Controllers\LoanController::class);
     Route::put('loans/{loan}/approve', [\App\Http\Controllers\LoanController::class, 'approve'])->name('loans.approve');
     Route::put('loans/{loan}/reject', [\App\Http\Controllers\LoanController::class, 'reject'])->name('loans.reject');

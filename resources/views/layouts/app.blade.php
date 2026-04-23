@@ -14,6 +14,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
     </style>
+    @stack('styles')
 </head>
 <body class="h-full">
     <div class="min-h-full" x-data="{ mobileMenuOpen: false }">
@@ -21,9 +22,10 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center">
-                        <div class="shrink-0">
-                            <a href="{{ route('dashboard') }}" class="text-white font-bold text-xl tracking-tight">
-                                Koperasi <span class="text-indigo-200">CG</span>
+                        <div class="shrink-0 flex items-center">
+                            <a href="{{ route('dashboard') }}" class="flex items-center text-white font-bold text-xl tracking-tight hover:opacity-90 transition">
+                                <img src="{{ asset('logokcg.png') }}" alt="Logo Koperasi CG" style="height: 36px; width: auto; margin-right: 12px;" class="bg-white rounded p-1 shadow-sm">
+                                <span>Koperasi <span class="text-indigo-200">CG</span></span>
                             </a>
                         </div>
                         <div class="hidden md:block">
@@ -161,5 +163,6 @@
             </div>
         </main>
     </div>
+    @stack('scripts')
 </body>
 </html>

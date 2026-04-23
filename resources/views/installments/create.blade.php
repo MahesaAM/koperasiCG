@@ -69,3 +69,41 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<style>
+    /* Custom style to match Tailwind form inputs */
+    .ts-control {
+        border-radius: 0.375rem; /* rounded-md */
+        padding: 0.5rem 0.75rem; /* py-2 px-3 */
+        border-color: #d1d5db; /* border-gray-300 */
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    }
+    .ts-control:focus {
+        border-color: #6366f1; /* border-indigo-500 */
+        box-shadow: 0 0 0 1px #6366f1; /* ring-indigo-500 */
+    }
+    .ts-wrapper.single .ts-control {
+        background-image: none;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if(document.getElementById('loan_id')) {
+            new TomSelect("#loan_id", {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: 'Cari dan Pilih Pinjaman...'
+            });
+        }
+    });
+</script>
+@endpush

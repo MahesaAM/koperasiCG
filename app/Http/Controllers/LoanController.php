@@ -20,7 +20,26 @@ class LoanController extends Controller
         }
 
         $loans = $query->latest()->paginate(10);
-        return view('loans.index', compact('loans'));
+        $defaultInterestRate = \App\Models\Setting::where('key', 'default_interest_rate')->value('value') ?? '5.00';
+        return view('loans.index', compact('loans', 'defaultInterestRate'));
+    }
+
+    public function updateInterestRate(Request $request)
+    {
+        if (!in_array(auth()->user()->role, ['admin', 'manager'])) {
+            abort(403);
+        }
+
+        $request->validate([
+            'default_interest_rate' => 'required|numeric|min:0',
+        ]);
+
+        \App\Models\Setting::updateOrCreate(
+            ['key' => 'default_interest_rate'],
+            ['value' => $request->default_interest_rate]
+        );
+
+        return back()->with('success', 'Bunga Koperasi berhasil diperbarui.');
     }
 
     /**
@@ -29,7 +48,8 @@ class LoanController extends Controller
     public function create()
     {
         $daftarAnggota = \App\Models\Anggota::where('status', 'active')->get();
-        return view('loans.create', compact('daftarAnggota'));
+        $defaultInterestRate = \App\Models\Setting::where('key', 'default_interest_rate')->value('value') ?? '5.00';
+        return view('loans.create', compact('daftarAnggota', 'defaultInterestRate'));
     }
 
     /**
@@ -72,7 +92,8 @@ class LoanController extends Controller
              return back()->with('error', 'Hanya pinjaman dengan status menunggu yang dapat diubah.');
         }
         $daftarAnggota = \App\Models\Anggota::where('status', 'active')->get();
-        return view('loans.edit', compact('loan', 'daftarAnggota'));
+        $defaultInterestRate = \App\Models\Setting::where('key', 'default_interest_rate')->value('value') ?? '5.00';
+        return view('loans.edit', compact('loan', 'daftarAnggota', 'defaultInterestRate'));
     }
 
     /**

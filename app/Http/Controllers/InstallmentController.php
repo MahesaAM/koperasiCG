@@ -75,6 +75,13 @@ class InstallmentController extends Controller
 
         $loan = \App\Models\Loan::find($validated['loan_id']);
         
+        // Security Check: Member can only pay their own loan
+        if (auth()->user()->role === 'member') {
+            if (!$loan || !auth()->user()->anggota || $loan->member_id !== auth()->user()->anggota->id) {
+                abort(403, 'Anda hanya dapat membayar angsuran untuk pinjaman Anda sendiri.');
+            }
+        }
+        
          // Total Expected Repayment
         $totalPrincipal = $loan->amount;
         $totalInterest = $totalPrincipal * ($loan->interest_rate / 100);

@@ -6,6 +6,7 @@
         <!-- Print Header -->
         <div class="hidden print:block mb-8 text-center">
             <h2 class="text-2xl font-bold">Koperasi Cahaya Gemilang</h2>
+        <p class="text-sm text-gray-600 mt-1">Perum Yuliani Gg. Cemara No. 6–7, Karang Tengah, Kecamatan-Kaliwungu, Kabupaten-Kendal, Jawa-Tengah.</p>
             <h3 class="text-xl">Bukti Transaksi Simpanan</h3>
         </div>
 

@@ -18,9 +18,7 @@
             <div class="mx-auto w-full max-w-sm lg:w-96">
                 <div>
                     <div class="flex items-center text-indigo-600">
-                        <svg class="h-10 w-10 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                        </svg>
+                        <img src="{{ asset('logokcg.png') }}" alt="Logo Koperasi CG" style="height: 40px; width: auto;">
                         <span class="ml-2 text-xl font-bold text-gray-900 tracking-tight">Koperasi CG</span>
                     </div>
                     <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">

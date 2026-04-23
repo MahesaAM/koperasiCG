@@ -6,6 +6,7 @@
         <!-- Print Header -->
         <div class="hidden print:block mb-8 text-center">
             <h2 class="text-2xl font-bold">Koperasi Cahaya Gemilang</h2>
+        <p class="text-sm text-gray-600 mt-1">Perum Yuliani Gg. Cemara No. 6–7, Karang Tengah, Kecamatan-Kaliwungu, Kabupaten-Kendal, Jawa-Tengah.</p>
             <h3 class="text-xl">Perjanjian Pinjaman</h3>
         </div>
 
@@ -44,6 +45,14 @@
                      <div class="sm:col-span-1">
                         <dt class="text-sm font-medium text-gray-500">Durasi</dt>
                         <dd class="mt-1 text-sm text-gray-900">{{ $loan->duration }} Bulan</dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Total Pembayaran Keseluruhan</dt>
+                        <dd class="mt-1 text-sm text-gray-900">Rp {{ number_format($loan->amount + ($loan->amount * ($loan->interest_rate / 100)), 0, ',', '.') }}</dd>
+                    </div>
+                     <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Cicilan per Bulan</dt>
+                        <dd class="mt-1 text-sm text-gray-900">Rp {{ number_format(($loan->amount + ($loan->amount * ($loan->interest_rate / 100))) / $loan->duration, 0, ',', '.') }}</dd>
                     </div>
                     @if($loan->approved_by)
                     <div class="sm:col-span-1">
