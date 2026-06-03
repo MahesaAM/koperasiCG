@@ -6,22 +6,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class Anggota extends Model
 {
-    protected $table = 'members'; // Keep table name for now to avoid data migration issues, or user wants FULL indo?
-    // Let's stick to 'members' table for safety unless instructed, but code is Anggota.
-    // Actually, migration 2026_02_04_053701_create_members_table.php created 'members'.
-    // Changing table name requires migration. I will add protected $table = 'members'; explicitly just in case.
+    public const CREATED_AT = 'dibuat_pada';
+
+    public const UPDATED_AT = 'diperbarui_pada';
+
+    protected $table = 'anggota';
+
     protected $fillable = [
-        'user_id',
+        'pengguna_id',
         'nik',
-        'name',
-        'address',
-        'phone',
-        'join_date',
+        'nama',
+        'alamat',
+        'telepon',
+        'tanggal_bergabung',
         'status',
     ];
 
-    public function user()
+    public function pengguna()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(Pengguna::class);
+    }
+
+    public function pinjaman()
+    {
+        return $this->hasMany(Pinjaman::class);
+    }
+
+    public function simpanan()
+    {
+        return $this->hasMany(Simpanan::class);
     }
 }

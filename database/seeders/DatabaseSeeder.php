@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Pengguna;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -10,35 +10,27 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Admin
-        \App\Models\User::factory()->create([
-            'name' => 'Administrator',
+        Pengguna::factory()->create([
+            'nama' => 'Administrator',
             'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'admin',
+            'kata_sandi' => 'password',
+            'peran' => 'admin',
         ]);
 
-        // Manager
-        \App\Models\User::factory()->create([
-            'name' => 'Manager Koperasi',
-            'email' => 'manager@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'manager',
+        Pengguna::factory()->create([
+            'nama' => 'Manajer Koperasi',
+            'email' => 'manajer@example.com',
+            'kata_sandi' => 'password',
+            'peran' => 'manajer',
         ]);
 
-        // Kasir
-        \App\Models\User::factory()->create([
-            'name' => 'Kasir',
+        Pengguna::factory()->create([
+            'nama' => 'Kasir',
             'email' => 'kasir@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'kasir',
+            'kata_sandi' => 'password',
+            'peran' => 'kasir',
         ]);
-        
-        // Administrasi (User logic map to admin or separate role? Prompt said Administrasi. I used admin/manager/kasir/member. Let's add 'administrasi' or assume admin/manager covers it. Prompt: "Administrator/Manajer, Administrasi, dan Kasir". Let's stick to simple roles for now, Administration might be part of Admin or Manager.)
     }
 }

@@ -2,112 +2,101 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AnggotaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function daftar()
     {
-        $daftarAnggota = \App\Models\Anggota::latest()->paginate(10);
-        return view('anggota.index', compact('daftarAnggota'));
+        $daftarAnggota = Anggota::with('pengguna')->latest()->paginate(10);
+
+        return view('anggota.daftar', compact('daftarAnggota'));
     }
 
-    public function createUser(Request $request, $id)
+    public function tambah()
     {
-        $anggota = \App\Models\Anggota::findOrFail($id);
-        if ($anggota->user_id) {
+        return view('anggota.tambah');
+    }
+
+    public function simpan(Request $permintaan)
+    {
+        $tervalidasi = $permintaan->validate([
+            'nik' => 'required|unique:anggota,nik',
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'telepon' => 'required|string|max:30',
+            'tanggal_bergabung' => 'required|date',
+            'status' => 'required|in:aktif,tidak_aktif',
+        ]);
+
+        Anggota::create($tervalidasi);
+
+        return redirect()->route('anggota.daftar')->with('success', 'Anggota berhasil ditambahkan.');
+    }
+
+    public function detail(string $id)
+    {
+        $anggota = Anggota::with('pengguna')->findOrFail($id);
+
+        return view('anggota.detail', compact('anggota'));
+    }
+
+    public function ubah(string $id)
+    {
+        $anggota = Anggota::findOrFail($id);
+
+        return view('anggota.ubah', compact('anggota'));
+    }
+
+    public function perbarui(Request $permintaan, string $id)
+    {
+        $anggota = Anggota::findOrFail($id);
+
+        $tervalidasi = $permintaan->validate([
+            'nik' => 'required|unique:anggota,nik,'.$anggota->id,
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'telepon' => 'required|string|max:30',
+            'tanggal_bergabung' => 'required|date',
+            'status' => 'required|in:aktif,tidak_aktif',
+        ]);
+
+        $anggota->update($tervalidasi);
+
+        return redirect()->route('anggota.daftar')->with('success', 'Data anggota berhasil diperbarui.');
+    }
+
+    public function hapus(string $id)
+    {
+        $anggota = Anggota::findOrFail($id);
+        $anggota->delete();
+
+        return redirect()->route('anggota.daftar')->with('success', 'Anggota berhasil dihapus.');
+    }
+
+    public function buatAkun(Request $permintaan, string $id)
+    {
+        $anggota = Anggota::findOrFail($id);
+
+        if ($anggota->pengguna_id) {
             return back()->with('error', 'Anggota sudah memiliki akun pengguna.');
         }
 
-        $user = \App\Models\User::create([
-            'name' => $anggota->name,
-            'email' => strtolower(str_replace(' ', '.', $anggota->name)) . '@example.com', // Simple generation
-            'password' => bcrypt('password'), // Default password
-            'role' => 'member',
+        $kataSandiAwal = 'password';
+        $email = Str::slug($anggota->nama, '.').'@example.com';
+
+        $pengguna = Pengguna::create([
+            'nama' => $anggota->nama,
+            'email' => $email,
+            'kata_sandi' => $kataSandiAwal,
+            'peran' => 'anggota',
         ]);
 
-        $anggota->update(['user_id' => $user->id]);
+        $anggota->update(['pengguna_id' => $pengguna->id]);
 
-        return back()->with('success', 'Akun pengguna berhasil dibuat. Email: ' . $user->email . ', Password: password');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('anggota.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nik' => 'required|unique:members',
-            'name' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
-            'join_date' => 'required|date',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        \App\Models\Anggota::create($validated);
-
-        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil ditambahkan.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $anggota = \App\Models\Anggota::findOrFail($id);
-        return view('anggota.show', compact('anggota'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $anggota = \App\Models\Anggota::findOrFail($id);
-        return view('anggota.edit', compact('anggota'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $anggota = \App\Models\Anggota::findOrFail($id);
-        
-        $validated = $request->validate([
-            'nik' => 'required|unique:members,nik,' . $anggota->id,
-            'name' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
-            'join_date' => 'required|date',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        $anggota->update($validated);
-
-        return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil diperbarui.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $anggota = \App\Models\Anggota::findOrFail($id);
-        $anggota->delete();
-
-        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil dihapus.');
+        return back()->with('success', 'Akun pengguna berhasil dibuat. Email: '.$pengguna->email.', kata sandi: '.$kataSandiAwal);
     }
 }

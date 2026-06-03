@@ -5,6 +5,9 @@
     /* Hide navigation and layout chrome */
     nav,
     header,
+    aside,
+    .bilah-samping,
+    .bilah-atas,
     .no-print {
         display: none !important;
     }
@@ -36,6 +39,7 @@
 
     /* Ensure content takes full width */
     .max-w-7xl,
+    .wadah-konten,
     .container {
         max-width: 100% !important;
         margin: 0 !important;
@@ -94,26 +98,33 @@
 
     /* Remove background colors except for subtle table headers */
     .bg-white,
-    .bg-gray-50,
-    .bg-indigo-600,
-    .bg-green-100,
-    .bg-red-100,
-    .bg-yellow-100,
-    .bg-blue-100 {
+    .bg-zinc-50,
+    .bg-stone-50,
+    .bg-emerald-50,
+    .bg-rose-50,
+    .bg-amber-50,
+    .bg-sky-50,
+    .panel,
+    .panel-isi,
+    .kartu-ringkas,
+    .pembungkus-tabel {
         background-color: transparent !important;
         border: 1px solid #ddd !important;
     }
 
     /* Keep status badge colors readable */
-    .bg-green-100 {
+    .badge-aktif,
+    .badge-disetujui,
+    .badge-lunas {
         background-color: #e8f5e9 !important;
     }
 
-    .bg-red-100 {
+    .badge-ditolak,
+    .badge-tidak-aktif {
         background-color: #ffebee !important;
     }
 
-    .bg-yellow-100 {
+    .badge-menunggu {
         background-color: #fff9c4 !important;
     }
 
@@ -160,13 +171,14 @@
     }
 
     /* Ensure good contrast */
-    .text-gray-500,
-    .text-gray-600,
-    .text-gray-700 {
+    .text-zinc-500,
+    .text-zinc-600,
+    .text-zinc-700 {
         color: #333 !important;
     }
 
-    .text-gray-900 {
+    .text-zinc-900,
+    .text-zinc-950 {
         color: black !important;
     }
 
